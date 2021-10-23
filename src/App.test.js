@@ -19,8 +19,7 @@ it("Renders instructions when game is started!", () => {
 //   const component = mount(<App />);
 
 //   component
-//     .find('button#start_game')
-//     .simulate('click')
+//     .simulate('keydown',{which: 300})
 
 //   expect().toHaveBeenCalled()
 // })
