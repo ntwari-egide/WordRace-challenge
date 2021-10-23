@@ -1,7 +1,8 @@
-import { Space, Typography } from 'antd';
+import { Button, Modal, Space, Typography } from 'antd';
 import './App.css';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import { useState } from 'react';
+import FailAudio from "./assets/audio/beep.mp3"
 
 /**
  * @author: ntwari egide
@@ -17,7 +18,14 @@ function App() {
 
   const [wellwrittenchars,setwellwrittenchars] = useState(0)
 
-  let [wordstack,setremainingstack] = useState(['HEAT','KILLS','CORONA'])
+  const [instructionsmodal,setinstructionsmodal] = useState(true)
+
+  const [gameovermodal,setgameovermodal] = useState(false)  
+
+
+  let [wordstack,] = useState(['HEAT','KILLS','CORONA'])
+
+  let [typedcharacters,settypedcharacters] = useState(0)
 
   let currentword = wordstack[0]
 
@@ -30,8 +38,6 @@ function App() {
   const anykeypressedhandler = (e) => {
     setkeypressed(e.key)
 
-      console.log('Leng ',wellwrittenchars);
-
     if(compareWord(currentword.charAt(wellwrittenchars), e.key)) {
 
       let sizehandler = wellwrittenchars
@@ -40,8 +46,10 @@ function App() {
 
       iswordcompleted(sizehandler + 1)
 
+      settypedcharacters(typedcharacters+1)
+
     } else {
-      var audio = new Audio('https://interactive-examples.mdn.mozilla.net/media/examples/t-rex-roar.mp3');
+      var audio = new Audio(FailAudio);
       audio.play();
     }
 
@@ -61,21 +69,61 @@ function App() {
     return false
   }
 
+  
+  /**
+   * @description: checking if word is completed so as to be removed in the stack
+   * @param {length}  
+   */
+
   const iswordcompleted = (length) => {
     if(currentword.length === length){
       wordstack.shift()
       setwellwrittenchars(0)
     }
-  }
 
+    if(wordstack.length === 0) setgameovermodal(true)
+  }
 
   return (
     <div className="App" tabIndex={0} onKeyUp={anykeypressedhandler}>
 
+      <Modal title="Word Race Game Instructions" footer={<> 
+        <Button className="quit-game-button">QUIT GAME</Button>
+        <Button onClick={() => setinstructionsmodal(false)} className="start-game-button">START GAME</Button>
+      </>} visible={instructionsmodal} onCancel={() => setinstructionsmodal(false)}>
+        <ul>
+          <li><p>By clicking <strong>START GAME</strong> you're going to see word to type</p></li>
+          <li><p>When you type <strong>incorrect</strong> character, You are going to hear <strong>sound</strong></p></li>
+          <li><p>When you finish writting a word, it is going to be cleared.</p></li>
+          <li><p>There is on screen feedback mechanism for showing clicked letter</p></li>
+        </ul>
+      </Modal>
+
+
+      
+      <Modal title="GAME OVER" footer={<> 
+        <Button className="save-game-button">SAVE SCORE</Button>
+        <Button onClick={() => setgameovermodal(false)} className="start-game-button">PLAY AGAIN</Button>
+      </>} visible={gameovermodal} onCancel={() => setgameovermodal(false)}>
+        <Space direction="vertical" className="statistics">
+          <Title level={4}>{typedcharacters}</Title>
+          <Text>SCORE</Text>
+        </Space>
+
+        <Space direction="vertical" className="statistics">
+          <Title level={4}>3</Title>
+          <Text>LEVEL</Text>
+        </Space>
+
+        <Space direction="vertical" className="statistics">
+          <Title level={4}>4X</Title>
+          <Text>SPEED</Text>
+        </Space>
+      </Modal>
       <Space className="results-content">
       <Space direction="vertical" className="level-container"><Title level={3} className="result-title">3</Title> <Text className="result">LEVEL</Text></Space>
         
-      <Space direction="vertical" className="score-container"><Title level={3} className="result-title">420</Title> <Text className="result">SCORE</Text></Space>
+      <Space direction="vertical" className="score-container"><Title level={3} className="result-title">{typedcharacters}</Title> <Text className="result">SCORE</Text></Space>
       
       <Space direction="vertical" className="speed-container"><Title level={3} className="result-title">4X</Title> </Space>
       </Space>
@@ -112,7 +160,8 @@ function App() {
           <Space className={`key-container ${keypressed === 'Q' ||keypressed === 'q' ? 'key-pressed':''}`}>
             <Text>Q</Text>
           </Space>
-          <Space className={`key-container ${keypressed === 'W' ||keypressed === 'w' ? 'key-pressed':'w'}`}>
+
+          <Space className={`key-container ${keypressed === 'W' ||keypressed === 'w' ? 'key-pressed':''}`}>
             <Text>W</Text>
           </Space>
           <Space className={`key-container ${keypressed === 'E' ||keypressed === 'e' ? 'key-pressed':''}`}>

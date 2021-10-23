@@ -125,3 +125,37 @@ span.ant-typography.result {
 .color_green{
   color: rgb(15, 241, 15) !important;
 }
+
+div#rcDialogTitle1 {
+  text-align: center;
+  color: #224BDA;
+}
+
+button.ant-btn.quit-game-button {
+  background: #DA4A22;
+  color: #fff;
+  height: 3em;
+  border: none;
+  width: 34%;
+}
+
+button.ant-btn.start-game-button {
+  background: #1E6FD9;
+  color: #fff;
+  height: 3em;
+  width: 35%;
+  border: none;
+}
+
+.ant-space.ant-space-vertical.statistics {
+  margin-left: 6em;
+  text-align: center;
+}
+
+button.ant-btn.save-game-button {
+  background: #F2BF27;
+  color: #fff;
+  border: none;
+  height: 3em;
+  width: 27%;
+}
