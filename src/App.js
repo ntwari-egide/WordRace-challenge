@@ -89,7 +89,7 @@ function App() {
 
       <Modal title="Word Race Game Instructions" footer={<> 
         <Button className="quit-game-button">QUIT GAME</Button>
-        <Button onClick={() => setinstructionsmodal(false)} className="start-game-button">START GAME</Button>
+        <Button onClick={() => setinstructionsmodal(false)} className="start-game-button" id="start_game">START GAME</Button>
       </>} visible={instructionsmodal} onCancel={() => setinstructionsmodal(false)}>
         <ul>
           <li><p>By clicking <strong>START GAME</strong> you're going to see word to type</p></li>
