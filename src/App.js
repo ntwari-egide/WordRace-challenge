@@ -4,13 +4,16 @@
  * @description: App component
  */
 
-import { Button, Modal, Space, Typography } from 'antd';
+import { Button, Modal, Space, Typography, Drawer } from 'antd';
 import './App.css';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FailAudio from "./assets/audio/beep.mp3"
+import CompletedWord from "./assets/audio/finished-word.mp3"
 import * as actions from "./redux/actions/score.actions"
 import "./constants/global-axios-config"
+import { ScoreTableComponent } from './components/ScoreTable';
+import { useSelector } from 'react-redux';
 
 const {Text, Title} = Typography
 
@@ -24,8 +27,9 @@ function App() {
 
   const [gameovermodal,setgameovermodal] = useState(false)  
 
+  const [tablevisibility,settablevisibility] = useState(false)
 
-  let [wordstack,] = useState(['HEAT','KILLS','CORONA'])
+  let [wordstack,] = useState(['HEAT','KILLS','CORONA','INTERNATIONAL','MAGIC'])
 
   let [typedcharacters,settypedcharacters] = useState(0)
 
@@ -81,6 +85,9 @@ function App() {
     if(currentword.length === length){
       wordstack.shift()
       setwellwrittenchars(0)
+
+      var audio = new Audio(CompletedWord);
+      audio.play();
     }
 
     if(wordstack.length === 0) setgameovermodal(true)
@@ -93,13 +100,20 @@ function App() {
   const saveScoreHandler = () => {
       const newscorerequrest = {
         score: typedcharacters,
-        level: 2,
-        speed: "2X"
+        level: 3,
+        speed: "4X"
       }
     
     actions.saveNewScore(newscorerequrest)
 
   }
+
+  const scoreData = useSelector( state => state.score )
+
+  useEffect(() => {
+    actions.getTop10Score()
+  },[scoreData])
+
 
   return (
     <div className="App" tabIndex={0} onKeyUp={anykeypressedhandler}>
@@ -115,14 +129,24 @@ function App() {
           <li><p>There is on screen feedback mechanism for showing clicked letter</p></li>
         </ul>
       </Modal>
-            
+
+      <Drawer
+        title="Table of top 10 scores"
+        width={800}
+        onClose={() => settablevisibility(false)}
+        visible={tablevisibility}
+      >
+        <ScoreTableComponent dataSource={scoreData} />
+      </Drawer>
+
+      
       <Modal title="GAME OVER" footer={<> 
         <Button className="save-game-button" onClick ={saveScoreHandler}>SAVE SCORE</Button>
         <Button onClick={() => {
           
           setgameovermodal(false)
           
-          window.location.reload()
+          settablevisibility(true)
 
         }} className="start-game-button">PLAY AGAIN</Button>
       </>} visible={gameovermodal} onCancel={() => setgameovermodal(false)}>

@@ -23,7 +23,7 @@ export const getTop10Score = async () => {
                 payload: res.data.data
             })
 
-            message.success("Getting top 10 scores is successfully done!")
+            // message.success("Getting top 10 scores is successfully done!")
         })
     } catch (error) {
         message.error('Failed getting top 10 scores, Try again')
