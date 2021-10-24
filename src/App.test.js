@@ -1,3 +1,9 @@
+
+/**
+ * @author: ntwari egide
+ * @description: All app tests
+ */
+
 import { render, screen } from '@testing-library/react';
 import App from './App';
 import { shallow, mount } from "enzyme";

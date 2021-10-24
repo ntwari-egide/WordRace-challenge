@@ -1,14 +1,15 @@
-import { Button, Modal, Space, Typography } from 'antd';
-import './App.css';
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
-import { useState } from 'react';
-import FailAudio from "./assets/audio/beep.mp3"
 
 /**
  * @author: ntwari egide
  * @description: App component
  */
 
+import { Button, Modal, Space, Typography } from 'antd';
+import './App.css';
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+import { useState } from 'react';
+import FailAudio from "./assets/audio/beep.mp3"
+import * as actions from "./redux/actions/score.actions"
 
 const {Text, Title} = Typography
 
@@ -84,6 +85,21 @@ function App() {
     if(wordstack.length === 0) setgameovermodal(true)
   }
 
+  /**
+   * @description: saving scores in the database
+   * @param {length}  
+   */
+  const saveScoreHandler = () => {
+      const newscorerequrest = {
+        score: typedcharacters,
+        level: 2,
+        speed: "2X"
+      }
+    
+    actions.saveNewScore(newscorerequrest)
+
+  }
+
   return (
     <div className="App" tabIndex={0} onKeyUp={anykeypressedhandler}>
 
@@ -102,8 +118,14 @@ function App() {
 
       
       <Modal title="GAME OVER" footer={<> 
-        <Button className="save-game-button">SAVE SCORE</Button>
-        <Button onClick={() => setgameovermodal(false)} className="start-game-button">PLAY AGAIN</Button>
+        <Button className="save-game-button" onClick ={saveScoreHandler}>SAVE SCORE</Button>
+        <Button onClick={() => {
+          
+          setgameovermodal(false)
+          
+          window.location.reload()
+
+        }} className="start-game-button">PLAY AGAIN</Button>
       </>} visible={gameovermodal} onCancel={() => setgameovermodal(false)}>
         <Space direction="vertical" className="statistics">
           <Title level={4}>{typedcharacters}</Title>

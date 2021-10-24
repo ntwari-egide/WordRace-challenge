@@ -14,7 +14,9 @@ export const getTop10Score = async () => {
     const url = 'api/v1/scores/get-top-10'
 
     try {
-        await axios.get(url,headers)
+        await axios.get(url,{
+            headers: headers
+        })
         .then( res => {
             store.dispatch({
                 type: actions.GET_TOP_10_SCORES,
@@ -32,7 +34,9 @@ export const saveNewScore = async (newscore) => {
     const url = 'api/v1/scores/get-top-10'
 
     try {
-        await axios.post(url,newscore,headers)
+        await axios.post(url,newscore,{
+            headers: headers
+        })
         .then( res => {
            
             message.success("Data is rendered successfully")
