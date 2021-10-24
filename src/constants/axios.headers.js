@@ -3,6 +3,6 @@
  * @description: axios header constants
  */
 
-export const headers = headers = {
+export const headers = {
     'Content-Type': 'application/json'
 }

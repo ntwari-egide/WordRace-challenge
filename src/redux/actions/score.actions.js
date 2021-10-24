@@ -31,7 +31,7 @@ export const getTop10Score = async () => {
 }
 
 export const saveNewScore = async (newscore) => {
-    const url = 'api/v1/scores/get-top-10'
+    const url = 'api/v1/scores'
 
     try {
         await axios.post(url,newscore,{

@@ -10,6 +10,7 @@ import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import { useState } from 'react';
 import FailAudio from "./assets/audio/beep.mp3"
 import * as actions from "./redux/actions/score.actions"
+import "./constants/global-axios-config"
 
 const {Text, Title} = Typography
 
@@ -114,9 +115,7 @@ function App() {
           <li><p>There is on screen feedback mechanism for showing clicked letter</p></li>
         </ul>
       </Modal>
-
-
-      
+            
       <Modal title="GAME OVER" footer={<> 
         <Button className="save-game-button" onClick ={saveScoreHandler}>SAVE SCORE</Button>
         <Button onClick={() => {
