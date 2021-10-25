@@ -29,13 +29,24 @@ function App() {
 
   const [tablevisibility,settablevisibility] = useState(false)
 
-  let [wordstack,] = useState(['HEAT','KILLS','CORONA','INTERNATIONAL','MAGIC'])
+  const [startcountdown,setstartcountdown] = useState(false)
+
+  let [wordstack,] = useState(['HEAT','KILLS','CORONA','INTERNATIONAL'])
 
   let [typedcharacters,settypedcharacters] = useState(0)
 
   let currentword = wordstack[0]
 
+  let otherwords = ["RANDOM", "AMAZING","GEEKS", "PROGRAMING","INSTRUMENT","QUESTIONS","ZEBRA","YOUTUBE","YOMBI"];
+
   
+
+  if(startcountdown) {
+    setTimeout(() => {
+      setgameovermodal(true)
+    },60000)
+  }
+
 
   /**
    * @description: handling any key pressed function
@@ -54,7 +65,7 @@ function App() {
 
       settypedcharacters(typedcharacters+1)
 
-    } else {
+    } else if(e.key !== "CapsLock") {
       var audio = new Audio(FailAudio);
       audio.play();
     }
@@ -76,6 +87,8 @@ function App() {
   }
 
   
+
+  
   /**
    * @description: checking if word is completed so as to be removed in the stack
    * @param {length}  
@@ -85,7 +98,7 @@ function App() {
     if(currentword.length === length){
       wordstack.shift()
       setwellwrittenchars(0)
-
+      wordstack.push(otherwords[Math.floor(Math.random() * wordstack.length)])
       var audio = new Audio(CompletedWord);
       audio.play();
     }
@@ -106,6 +119,8 @@ function App() {
     
     actions.saveNewScore(newscorerequrest)
 
+    settablevisibility(true)
+
   }
 
   const scoreData = useSelector( state => state.score )
@@ -120,7 +135,10 @@ function App() {
 
       <Modal title="Word Race Game Instructions" footer={<> 
         <Button className="quit-game-button">QUIT GAME</Button>
-        <Button onClick={() => setinstructionsmodal(false)} className="start-game-button" id="start_game">START GAME</Button>
+        <Button onClick={() => {
+          setinstructionsmodal(false)
+          setstartcountdown(true)
+        }} className="start-game-button" id="start_game">START GAME</Button>
       </>} visible={instructionsmodal} onCancel={() => setinstructionsmodal(false)}>
         <ul>
           <li><p>By clicking <strong>START GAME</strong> you're going to see word to type</p></li>
@@ -145,8 +163,8 @@ function App() {
         <Button onClick={() => {
           
           setgameovermodal(false)
-          
-          settablevisibility(true)
+
+          window.location.reload()
 
         }} className="start-game-button">PLAY AGAIN</Button>
       </>} visible={gameovermodal} onCancel={() => setgameovermodal(false)}>
