@@ -1,4 +1,23 @@
 ## WORD RACE CHALLENGE
+
+**DEMO**
+
+Front end : [Word race challenge demo)](https://word-race-challenge.vercel.app/)
+
+Back end : [Back end Rest Apis](https://word-race-backend-apis.herokuapp.com/)
+
+**Tech Stacks**
+- Front end: 
+	- Ant Design 
+	-  React Js
+	- Redux
+- Back end : 
+	- Node Js
+	- Express
+	- Mongo DB
+	-  mongoose
+
+
 **SCREEN SHOOTS**
 Welcome instructions content, **start game**
 
@@ -77,3 +96,60 @@ Displaying Top 10 Scores after saving game scores and statistics
             })
         })
 	```
+
+7. Getting score statistics
+
+	
+	```javascript
+	let count 
+
+    await Score
+        .find()
+        .count()
+        .exec()
+        .then( counts => count = counts )
+
+    let maximumlevel
+
+    await Score
+        .find()
+        .sort({level: -1})
+        .limit(1)
+        .exec()
+        .then(toplevel => maximumlevel = toplevel[0].level )
+
+    let averagescore
+
+    await Score
+        .aggregate([
+            {
+                $group:
+                {
+                    _id: "_id",
+                    Average: {$avg: "$score"}
+                }
+            }
+        ])
+
+        .exec()
+        .then( average => {
+            res.json({
+                length: 1,
+                data: {
+                    max: maximumlevel,
+                    total: count,
+                    average: average[0].Average
+                }
+            })
+        })
+	```
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## [](#contact)Contact
+
+Egide Ntwari - [egide2020](https://twitter.com/egide2020) - [ntwariegide2@gmail.com](mailto:ntwariegide2@gmail.com)
+
+Project Link: https://github.com/ntwari-egide/WordRace-challenge
