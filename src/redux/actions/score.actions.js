@@ -26,7 +26,7 @@ export const getTop10Score = async () => {
             // message.success("Getting top 10 scores is successfully done!")
         })
     } catch (error) {
-        message.error('Failed getting top 10 scores, Try again')
+        // message.error('Failed getting top 10 scores, Try again')
     }
 }
 
@@ -63,6 +63,6 @@ export const saveNewScore = async (newscore) => {
             message.success("Data is rendered successfully")
         })
     } catch (error) {
-        message.error('Failed to save score, Try again')
+        // message.error('Failed to save score, Try again')
     }
 }

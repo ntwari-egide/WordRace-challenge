@@ -163,7 +163,7 @@ function App() {
         title="Word Race Statistics"
         width={800}
         onClose={() => settablevisibility(false)}
-        visible={tablevisibility}
+        visible={true}
       >
         <br />
         <Title level={4}>Breif statistics</Title>
