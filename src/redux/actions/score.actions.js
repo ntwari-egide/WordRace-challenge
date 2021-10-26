@@ -30,6 +30,27 @@ export const getTop10Score = async () => {
     }
 }
 
+
+export const getScoreStats = async () => {
+    
+    const url = 'api/v1/scores/get-score-statistics'
+
+    try {
+        await axios.get(url,{
+            headers: headers
+        })
+        .then( res => {
+            store.dispatch({
+                type: actions.GET_SCORE_STATS,
+                payload: res.data.data
+            })
+        })
+    } catch (error) {
+        message.error('Failed getting score stats, Try again')
+    }
+}
+
+
 export const saveNewScore = async (newscore) => {
     const url = 'api/v1/scores'
 

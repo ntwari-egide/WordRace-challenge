@@ -121,7 +121,7 @@ function App() {
       const newscorerequrest = {
         score: typedcharacters,
         level: 3,
-        speed: multiplier
+        speed: `${multiplier}X`
       }
     
     actions.saveNewScore(newscorerequrest)
