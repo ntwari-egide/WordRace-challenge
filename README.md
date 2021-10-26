@@ -8,9 +8,9 @@ Play ground
 
 ![enter image description here](https://res.cloudinary.com/dpqasrwfu/image/upload/v1635190533/3_gnvd5u.png)
 
-Displaying Top 10 Scores after saving game scores
+Displaying Top 10 Scores after saving game scores and statistics
 
-![enter image description here](https://res.cloudinary.com/dpqasrwfu/image/upload/v1635190534/1_hh24df.png)
+![enter image description here](https://res.cloudinary.com/dpqasrwfu/image/upload/v1635230552/4_iptueu.png)
 
 **FRONT END CONCEPTS**
 
@@ -19,7 +19,7 @@ Displaying Top 10 Scores after saving game scores
 	 - I used **onKeyUp** function on **App component** so that I can capture every key pressed, then I use state to hightlight pressed key
 	 - Function handling onKeyUp press is **anykeypressedhandler**
 	 - anykeypressedhandler function is used to handle all check events, we set a state that is handling clicked key so as to highlight that key in **Yellow** color	
-	 - 
+	 
 2. Word stack implementation mechanism
 	- in **onkeypressedhandler** I have to check whether a key pressed is the same as the current character in the word. 
 	- Inside **iswordcompleted**, if word is finished, we remove it from the stack and automatically **add new word** which is selected randomly from the **array** of words
@@ -48,12 +48,17 @@ Displaying Top 10 Scores after saving game scores
 4. GET `/api/v1/scores/get-top-10` , getting all top 10 scores
 5. Schema of Score Document:
 	
-|Name  | Data type  | Required  | 
-|--|--|--| --|
-| Score  | Number  | Required
-| Level | Number |  Required 
-| Speed| String |  Required
-| Played At| Date |  Not Required  
+```
+| ----------- | ----------- |---------------|
+| Name 		  | Type        |  Required     |
+| ----------- | ----------- |---------------|
+| Score       | Number      | Required      |
+| Level       | Number      | Required      |
+| Speed       | String      | Required      |
+| Played At   | Date        | Not Required  |
+| ----------- | ----------- |---------------|
+```
+ 
 
 
 6. Getting Top 10 scores from database
