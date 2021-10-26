@@ -6,7 +6,9 @@
 
 import { combineReducers } from "redux";
 import { scoreReducer } from "./score.reducer";
+import { statisticsReducer } from "./stats.reducer";
 
 export const rootReducer = combineReducers({
-    score: scoreReducer
+    score: scoreReducer,
+    stats: statisticsReducer
 })

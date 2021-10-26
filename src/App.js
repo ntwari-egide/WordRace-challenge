@@ -131,10 +131,14 @@ function App() {
   }
 
   const scoreData = useSelector( state => state.score )
+  const stats = useSelector( state => state.stats)
 
   useEffect(() => {
     actions.getTop10Score()
-  },[scoreData])
+    actions.getScoreStats()
+  },[scoreData,stats])
+
+  console.log("stats ",stats);
 
 
   return (
@@ -159,7 +163,7 @@ function App() {
         title="Word Race Statistics"
         width={800}
         onClose={() => settablevisibility(false)}
-        visible={true}
+        visible={tablevisibility}
       >
         <br />
         <Title level={4}>Breif statistics</Title>
@@ -167,19 +171,19 @@ function App() {
         <br />
         <Row>
           <Col span={8}>Number of games played: </Col>
-          <Col>40 games</Col>
+          <Col>{stats.total} games</Col>
         </Row>
 
         <br />
         <Row>
           <Col span={8}>Avarage score: </Col>
-          <Col>200</Col>
+          <Col>{stats.average}</Col>
         </Row>
 
         <br />
         <Row>
           <Col span={8}>Max Level reached: </Col>
-          <Col>3</Col>
+          <Col>{stats.max}</Col>
         </Row> 
 
         <br />
