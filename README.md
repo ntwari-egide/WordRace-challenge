@@ -1,4 +1,23 @@
 ## WORD RACE CHALLENGE
+
+**DEMO**
+
+Front end : [Word race challenge demo)](https://word-race-challenge.vercel.app/)
+
+Back end : [Back end Rest Apis](https://word-race-backend-apis.herokuapp.com/)
+
+**Tech Stacks**
+- Front end: 
+	- Ant Design 
+	-  React Js
+	- Redux
+- Back end : 
+	- Node Js
+	- Express
+	- Mongo DB
+	-  mongoose
+
+
 **SCREEN SHOOTS**
 Welcome instructions content, **start game**
 
@@ -8,9 +27,9 @@ Play ground
 
 ![enter image description here](https://res.cloudinary.com/dpqasrwfu/image/upload/v1635190533/3_gnvd5u.png)
 
-Displaying Top 10 Scores after saving game scores
+Displaying Top 10 Scores after saving game scores and statistics
 
-![enter image description here](https://res.cloudinary.com/dpqasrwfu/image/upload/v1635190534/1_hh24df.png)
+![enter image description here](https://res.cloudinary.com/dpqasrwfu/image/upload/v1635230552/4_iptueu.png)
 
 **FRONT END CONCEPTS**
 
@@ -19,7 +38,7 @@ Displaying Top 10 Scores after saving game scores
 	 - I used **onKeyUp** function on **App component** so that I can capture every key pressed, then I use state to hightlight pressed key
 	 - Function handling onKeyUp press is **anykeypressedhandler**
 	 - anykeypressedhandler function is used to handle all check events, we set a state that is handling clicked key so as to highlight that key in **Yellow** color	
-	 - 
+	 
 2. Word stack implementation mechanism
 	- in **onkeypressedhandler** I have to check whether a key pressed is the same as the current character in the word. 
 	- Inside **iswordcompleted**, if word is finished, we remove it from the stack and automatically **add new word** which is selected randomly from the **array** of words
@@ -48,12 +67,17 @@ Displaying Top 10 Scores after saving game scores
 4. GET `/api/v1/scores/get-top-10` , getting all top 10 scores
 5. Schema of Score Document:
 	
-|Name  | Data type  | Required  | 
-|--|--|--| --|
-| Score  | Number  | Required
-| Level | Number |  Required 
-| Speed| String |  Required
-| Played At| Date |  Not Required  
+```
+| ----------- | ----------- |---------------|
+| Name 		  | Type        |  Required     |
+| ----------- | ----------- |---------------|
+| Score       | Number      | Required      |
+| Level       | Number      | Required      |
+| Speed       | String      | Required      |
+| Played At   | Date        | Not Required  |
+| ----------- | ----------- |---------------|
+```
+ 
 
 
 6. Getting Top 10 scores from database
@@ -72,3 +96,60 @@ Displaying Top 10 Scores after saving game scores
             })
         })
 	```
+
+7. Getting score statistics
+
+	
+	```javascript
+	let count 
+
+    await Score
+        .find()
+        .count()
+        .exec()
+        .then( counts => count = counts )
+
+    let maximumlevel
+
+    await Score
+        .find()
+        .sort({level: -1})
+        .limit(1)
+        .exec()
+        .then(toplevel => maximumlevel = toplevel[0].level )
+
+    let averagescore
+
+    await Score
+        .aggregate([
+            {
+                $group:
+                {
+                    _id: "_id",
+                    Average: {$avg: "$score"}
+                }
+            }
+        ])
+
+        .exec()
+        .then( average => {
+            res.json({
+                length: 1,
+                data: {
+                    max: maximumlevel,
+                    total: count,
+                    average: average[0].Average
+                }
+            })
+        })
+	```
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## [](#contact)Contact
+
+Egide Ntwari - [egide2020](https://twitter.com/egide2020) - [ntwariegide2@gmail.com](mailto:ntwariegide2@gmail.com)
+
+Project Link: https://github.com/ntwari-egide/WordRace-challenge
