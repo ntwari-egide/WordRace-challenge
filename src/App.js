@@ -160,7 +160,7 @@ function App() {
       
       <Modal title="GAME OVER" footer={<> 
         <Button className="save-game-button" onClick ={saveScoreHandler}>SAVE SCORE</Button>
-        <Button onClick={() => {
+        <Button onClick={() => {  
           
           setgameovermodal(false)
 
