@@ -4,7 +4,7 @@
  * @description: App component
  */
 
-import { Button, Modal, Space, Typography, Drawer } from 'antd';
+import { Button, Modal, Space, Typography, Drawer, Row, Col } from 'antd';
 import './App.css';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import { useEffect, useState } from 'react';
@@ -30,6 +30,8 @@ function App() {
   const [tablevisibility,settablevisibility] = useState(false)
 
   const [startcountdown,setstartcountdown] = useState(false)
+
+  let [multiplier,setmultiplier] = useState(0)
 
   let [wordstack,] = useState(['HEAT','KILLS','CORONA','INTERNATIONAL'])
 
@@ -68,6 +70,7 @@ function App() {
     } else if(e.key !== "CapsLock") {
       var audio = new Audio(FailAudio);
       audio.play();
+      setmultiplier(0)
     }
 
   }
@@ -101,6 +104,10 @@ function App() {
       wordstack.push(otherwords[Math.floor(Math.random() * wordstack.length)])
       var audio = new Audio(CompletedWord);
       audio.play();
+
+      let mult = multiplier
+
+      setmultiplier(mult + 1)
     }
 
     if(wordstack.length === 0) setgameovermodal(true)
@@ -114,7 +121,7 @@ function App() {
       const newscorerequrest = {
         score: typedcharacters,
         level: 3,
-        speed: "4X"
+        speed: multiplier
       }
     
     actions.saveNewScore(newscorerequrest)
@@ -149,11 +156,34 @@ function App() {
       </Modal>
 
       <Drawer
-        title="Table of top 10 scores"
+        title="Word Race Statistics"
         width={800}
         onClose={() => settablevisibility(false)}
-        visible={tablevisibility}
+        visible={true}
       >
+        <br />
+        <Title level={4}>Breif statistics</Title>
+        
+        <br />
+        <Row>
+          <Col span={8}>Number of games played: </Col>
+          <Col>40 games</Col>
+        </Row>
+
+        <br />
+        <Row>
+          <Col span={8}>Avarage score: </Col>
+          <Col>200</Col>
+        </Row>
+
+        <br />
+        <Row>
+          <Col span={8}>Max Level reached: </Col>
+          <Col>3</Col>
+        </Row> 
+
+        <br />
+        <Title level={4}>Top 10 Scores</Title>
         <ScoreTableComponent dataSource={scoreData} />
       </Drawer>
 
@@ -188,7 +218,7 @@ function App() {
         
       <Space direction="vertical" className="score-container"><Title level={3} className="result-title">{typedcharacters}</Title> <Text className="result">SCORE</Text></Space>
       
-      <Space direction="vertical" className="speed-container"><Title level={3} className="result-title">4X</Title> </Space>
+      <Space direction="vertical" className="speed-container"><Title level={3} className="result-title">{multiplier}X</Title> </Space>
       </Space>
 
       <div className="word-race">
