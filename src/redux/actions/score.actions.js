@@ -46,7 +46,7 @@ export const getScoreStats = async () => {
             })
         })
     } catch (error) {
-        message.error('Failed getting score stats, Try again')
+        // message.error('Failed getting score stats, Try again')
     }
 }
 
