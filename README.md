@@ -1,70 +1,74 @@
-# Getting Started with Create React App
+## WORD RACE CHALLENGE
+**SCREEN SHOOTS**
+Welcome instructions content, **start game**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![enter image description here](https://res.cloudinary.com/dpqasrwfu/image/upload/v1635190533/2_mbmlhu.png)
 
-## Available Scripts
+Play ground
 
-In the project directory, you can run:
+![enter image description here](https://res.cloudinary.com/dpqasrwfu/image/upload/v1635190533/3_gnvd5u.png)
 
-### `npm start`
+Displaying Top 10 Scores after saving game scores
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![enter image description here](https://res.cloudinary.com/dpqasrwfu/image/upload/v1635190534/1_hh24df.png)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+**FRONT END CONCEPTS**
 
-### `npm test`
+ 1. Screen feedback mechanism
+	 
+	 - I used **onKeyUp** function on **App component** so that I can capture every key pressed, then I use state to hightlight pressed key
+	 - Function handling onKeyUp press is **anykeypressedhandler**
+	 - anykeypressedhandler function is used to handle all check events, we set a state that is handling clicked key so as to highlight that key in **Yellow** color	
+	 - 
+2. Word stack implementation mechanism
+	- in **onkeypressedhandler** I have to check whether a key pressed is the same as the current character in the word. 
+	- Inside **iswordcompleted**, if word is finished, we remove it from the stack and automatically **add new word** which is selected randomly from the **array** of words
+	
+3. Progress view implementation
+	- Score is calculated as the total of all **well typed characters**, we used **typedcharacters** state to manage it
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+4. Game over  implementation
+	- Game over happens when the stack is empty or after one minute times out
+	- - I've implemented the modal to display **score, level, speed multiplier**, on that modal there is I've added
+	- when save score is presssed, we submit function of action type to redux to consume POST api
+	- when 	Play again is clicked, we hide the modal and then we reload the page to set every state to inital state value
+	- when save score is clicked, Drawer is rendered to show Top 10 scores
 
-### `npm run build`
+5. Sound setting implementation
+	- When **iswordcompleted** function is called, and word is completed, the track called **CompleteWord** is played
+	- If key pressed is not equal to exact character, and it is not a Capslock, The **FailedAudio** audio is played
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**BACK END CONCEPTS**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Structure of the code arrangement, We've implemented **controllers**, **App Js** as an entry point of the application, **router** which is going to route to application apis request to corresponding controllers, **modal** which contains a class of Score and Db Connection definitions
 
-### `npm run eject`
+2.  GET `/api/v1/scores`, get all scores
+3. POST `/api/v1/scores`, saving new scores in mongo db database
+4. GET `/api/v1/scores/get-top-10` , getting all top 10 scores
+5. Schema of Score Document:
+	
+|Name  | Data type  | Required  | 
+|--|--|--| --|
+| Score  | Number  | Required
+| Level | Number |  Required 
+| Speed| String |  Required
+| Played At| Date |  Not Required  
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+6. Getting Top 10 scores from database
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+	
+	```javascript
+	Score
+        .find()
+        .sort({score: -1})
+        .limit(10)
+        .exec()
+        .then(top10Scores => {
+            res.json({
+                length: top10Scores.length,
+                data: top10Scores
+            })
+        })
+	```
